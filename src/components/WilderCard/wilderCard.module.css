@@ -1,0 +1,87 @@
+.app {
+    position: relative;
+    padding: 20px;
+    border: 1px solid #c9c9c9;
+    border-radius: 7px;
+    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.15);
+  }
+
+  .trash{
+    border: none;
+    position: absolute;
+    top:1%;
+    right: 1%;
+    cursor: pointer;
+    background-color: transparent;
+    
+  }
+   
+  .app > img:nth-child(2) {
+    border-radius: 7px 7px 0 0;
+    margin-bottom: 20px;
+    max-width: 100%;
+    height: auto;
+  }
+   
+  .about .h3, .skillsList h4{
+    color: #F76C6C;
+  }
+   
+  .about p, .skills > li {
+    color: #757575;
+    line-height: 1.5;
+    font-size: 0.8em;
+  }
+
+  .city{
+    color: #757575;
+    font-size: 0.6em;
+    margin-left: 2%;
+  }
+
+  .skills{
+    padding: unset;
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  .skillGrade{
+    display: flex;
+    gap: 0.8em;
+    align-items: center;
+  }
+  
+
+  .button {
+    height: 30px;
+    cursor: pointer;
+    text-decoration: none;
+    border: #F76C6C 1px solid;
+    color: #fff;
+    border-radius: 4px;
+    display: inline-block;
+    margin: 1%;
+  }
+
+  .gradeTitle{
+    color: rgba(0, 0, 0, .3);
+    margin: 1%;
+  }
+
+  .grades{
+    height: 20px;
+    width: 20px; 
+    align-items: center;
+    display: flex;
+    justify-content: center;
+  
+    /* Colors */
+    background-color: rgba(0, 0, 0, .3);
+    color: #FFF;
+  
+    /* Rounded border */
+    border-radius: 9999px;
+  }
+
+

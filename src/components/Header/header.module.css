@@ -1,0 +1,12 @@
+.app{
+    background-color: #F76C6C;
+    color: #fff;
+}
+
+.h1{
+    font-size: 40px;
+    margin: 0 0 0.35em; 
+    margin-left: 20%;
+    margin-right: auto;
+    padding: 24px;
+}

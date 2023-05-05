@@ -27,11 +27,11 @@ function Wilders() {
                 {wilders.map((wilder) => (
                     <WilderCard
                         key={wilder.id}
+                        id={wilder.id}         
                         name={wilder.name}
                         city={wilder.city}
-                        skills={wilder.skills}   
+                        grades={wilder.grades}   
                         refresh={fetchData} 
-                        id={wilder.id}         
                     />
                 ))}
             </section>

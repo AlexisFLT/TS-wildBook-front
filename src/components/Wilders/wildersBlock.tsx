@@ -1,26 +1,59 @@
 import { useEffect, useState } from "react";
-import WilderCard , { IWilderProps } from "../WilderCard/wilderCard";
-import styles from "./wildersBlock.module.css";
 import axios from "axios";
+import WilderCard , { IWilderProps } from "../WilderCard/wilderCard";
 import AddWilder from "../AddWilder/addWilder";
+import styles from "./wildersBlock.module.css";
+import AddGrade from "../AddGrade/AddGrade";
 
+interface ISkillFromAPI {
+    id: number;
+    name: string;
+  }
+  
+  interface IGradeFromAPI {
+    grade: number;
+    skill: ISkillFromAPI;
+  }
+  
+  interface IWilderFromAPI {
+    name: string;
+    city: string;
+    id: number;
+    grades: IGradeFromAPI[];
+  }
 
-function Wilders() {
-    const [wilders, setWilders] = useState<IWilderProps[]>([]);
-    
-    const fetchData = async () => {
-        const wilders = await axios.get("http://localhost:5000/api/wilder");
-        setWilders(wilders.data)
-        console.log(wilders);
+  const formatWildersFromApi = (wilders: IWilderFromAPI[]): IWilderProps[] =>
+  wilders.map((wilder) => {
+    return {
+      id: wilder.id,
+      name: wilder.name,
+      city: wilder.city,
+      skills: wilder.grades.map((grade) => {
+        return { votes: grade.grade, title: grade.skill.name };
+      }),
     };
-
+  });
+  
+  function Wilders() {
+      const [wilders, setWilders] = useState<IWilderProps[]>([]);
+      const [lastUpdate, setLastUpdate] = useState(new Date().getTime());
+      
     useEffect(() => {
-        fetchData();
-    }, []);
+      const fetchWilders = async () => {
+        const wilderFromApi = await axios.get<IWilderFromAPI[]>(
+          "http://localhost:5000/api/wilder"
+        );
+        console.log(wilderFromApi);
+        setWilders(formatWildersFromApi(wilderFromApi.data));
+      };
+      fetchWilders();
+    }, [lastUpdate]);
+
     return(
         <div className={styles.app}>
             <section className={styles.addRemove} >
-                <AddWilder refresh={fetchData} />
+              <AddWilder setLastUpdate={setLastUpdate}/>
+              <AddGrade setLastUpdate={setLastUpdate} />
             </section>
             <h2 className={styles.h2}>Wilders</h2>
             <section className={styles.cardsBlock}>
@@ -30,8 +63,7 @@ function Wilders() {
                         name={wilder.name}
                         city={wilder.city}
                         skills={wilder.skills}   
-                        refresh={fetchData} 
-                        id={wilder.id}         
+                        id={wilder.id}      
                     />
                 ))}
             </section>

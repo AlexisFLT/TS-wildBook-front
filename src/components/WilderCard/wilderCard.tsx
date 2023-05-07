@@ -2,13 +2,8 @@ import avatar from "../../assets/avatar.png";
 import { BsTrash3Fill } from "react-icons/bs";
 import PropTypes from "prop-types";
 import axios from "axios";
+import Skill, { ISkillProps } from "../Skills/Skill";
 import styles from "./wilderCard.module.css";
-
-export interface ISkillProps {
-  id: number,
-  title: string,
-  votes: number,
-}
 
 export type Refresh = () => void;
 
@@ -17,22 +12,20 @@ export interface IWilderProps {
   name: string,
   city: string,
   skills: ISkillProps[],
-  refresh: Refresh
 };
 
-function WilderCard({ id, name, city, skills, refresh }: IWilderProps) {
+function WilderCard({ id, name, city, skills }: IWilderProps) {
 
   const handleDelete = (id: number) => {
     axios
       .delete(`http://localhost:5000/api/wilder/${id}`)
       .then(() => {
-        refresh();
       })
       .catch((error) => {
         console.error(error);
       });
   };
-  console.log(id);
+
   return (
     <div className={styles.app} key={id}>
       <button
@@ -58,14 +51,11 @@ function WilderCard({ id, name, city, skills, refresh }: IWilderProps) {
       <section className={styles.skillsList}>
         <h4>Wild Skills</h4>
         <ul className={styles.skills}>
-          {skills.map((skill : ISkillProps) => (
-            <button type="button" key={skill.id} className={styles.button}>
-              <li className={styles.skillGrade}>
-                <h5 className={styles.gradeTitle}>{skill.title}</h5>
-                <span className={styles.grades}>{skill.votes}</span>
-              </li>
-            </button>
-          ))}
+            {skills.map((skill) => (
+              <button type="button" className={styles.button}>
+                <Skill key={skill.title} title={skill.title} votes={skill.votes} />
+              </button>
+            ))}
         </ul>
       </section>
     </div>
@@ -78,7 +68,6 @@ WilderCard.propTypes = {
   name: PropTypes.string.isRequired,
   city: PropTypes.string.isRequired,
   skills: PropTypes.arrayOf(PropTypes.object).isRequired,
-  refresh: PropTypes.func.isRequired,
 };
 
 export default WilderCard;

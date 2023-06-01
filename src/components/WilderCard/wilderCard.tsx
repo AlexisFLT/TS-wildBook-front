@@ -37,7 +37,7 @@ function WilderCard({ id, name, city, skills }: IWilderProps) {
       </button>
       <img className={styles.avatarImg} src={avatar} alt="avatar" />
       <section className={styles.about}>
-        <h3 className={styles.h3}>
+        <h3 className={styles.h3} key={grades.wilderId}>
           {name}
           <span className={styles.city}> {city}</span>
         </h3>
@@ -68,6 +68,8 @@ WilderCard.propTypes = {
   name: PropTypes.string.isRequired,
   city: PropTypes.string.isRequired,
   skills: PropTypes.arrayOf(PropTypes.object).isRequired,
+  grades: PropTypes.arrayOf(PropTypes.object).isRequired,
+  refresh: PropTypes.func.isRequired,
 };
 
 export default WilderCard;

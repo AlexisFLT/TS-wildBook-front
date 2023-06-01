@@ -60,10 +60,12 @@ interface ISkillFromAPI {
                 {wilders.map((wilder) => (
                     <WilderCard
                         key={wilder.id}
+                        id={wilder.id}         
                         name={wilder.name}
                         city={wilder.city}
                         skills={wilder.skills}   
                         id={wilder.id}      
+
                     />
                 ))}
             </section>

@@ -1,9 +1,6 @@
+import { ISkillProps } from "../../interface/interface";
 import styles from "./skill.module.css"
 
-export interface ISkillProps {
-    title: string;
-    votes: number;
-  }
   
   const Skill = ({ title, votes }: ISkillProps) => {
     return (

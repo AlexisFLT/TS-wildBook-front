@@ -1,51 +1,39 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import WilderCard , { IWilderProps } from "../WilderCard/wilderCard";
+import WilderCard from "../WilderCard/wilderCard";
+import { IWilderFromAPI, IWilderProps } from "../../interface/interface";
 import AddWilder from "../AddWilder/addWilder";
 import styles from "./wildersBlock.module.css";
 import AddGrade from "../AddGrade/AddGrade";
+  
 
-interface ISkillFromAPI {
-    id: number;
-    name: string;
-  }
-  
-  interface IGradeFromAPI {
-    grade: number;
-    skill: ISkillFromAPI;
-  }
-  
-  interface IWilderFromAPI {
-    name: string;
-    city: string;
-    id: number;
-    grades: IGradeFromAPI[];
-  }
+const formatWildersFromApi = (wilders: IWilderFromAPI[]): IWilderProps[] =>
+wilders.map((wilder) => {
+  return {
+    id: wilder.id,
+    name: wilder.name,
+    grades: wilder.grades,
+    city: wilder.city,
+    skills: wilder.grades.map((grade) => {
+      return { id:grade.skill.id, votes: grade.grade, title: grade.skill.name };
+    }),
+    
+  };
+});
 
-  const formatWildersFromApi = (wilders: IWilderFromAPI[]): IWilderProps[] =>
-  wilders.map((wilder) => {
-    return {
-      id: wilder.id,
-      name: wilder.name,
-      city: wilder.city,
-      skills: wilder.grades.map((grade) => {
-        return { votes: grade.grade, title: grade.skill.name };
-      }),
-    };
-  });
-  
-  function Wilders() {
+function Wilders() {
       const [wilders, setWilders] = useState<IWilderProps[]>([]);
       const [lastUpdate, setLastUpdate] = useState(new Date().getTime());
       
     useEffect(() => {
       const fetchWilders = async () => {
-        const wilderFromApi = await axios.get<IWilderFromAPI[]>(
+        const response = await axios.get<IWilderFromAPI[]>(
           "http://localhost:5000/api/wilder"
         );
-        console.log(wilderFromApi);
-        setWilders(formatWildersFromApi(wilderFromApi.data));
+        const wildersFromApi = response.data;
+        setWilders(formatWildersFromApi(wildersFromApi));
       };
+      
       fetchWilders();
     }, [lastUpdate]);
 
@@ -63,10 +51,8 @@ interface ISkillFromAPI {
                         id={wilder.id}         
                         name={wilder.name}
                         city={wilder.city}
-                        skills={wilder.skills}   
-                        id={wilder.id}      
-
-                    />
+                        skills={wilder.skills}
+                     />
                 ))}
             </section>
         </div>

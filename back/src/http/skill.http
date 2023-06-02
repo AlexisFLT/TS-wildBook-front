@@ -1,0 +1,28 @@
+POST http://localhost:5000/api/skill
+Content-Type: application/json
+
+{
+    "name": "Node"
+}
+
+###
+GET http://localhost:5000/api/skill
+
+###
+DELETE http://localhost:5000/api/skill
+Content-Type: application/json
+
+{
+    "id": 1
+}
+
+###
+PUT http://localhost:5000/api/skill
+Content-Type: application/json
+
+{
+    "id": 2,
+    "newData": {
+        "name": "PHP"
+    }
+}

@@ -1,17 +1,13 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { IWilderProps } from "../WilderCard/wilderCard";
+import { IWilderProps, ISkillProps } from "../../interface/interface";
 import styles from "./addGrade.module.css";
 
-interface ISkillFromAPI {
-  id: number;
-  name: string;
-}
 
 const AddGrade = ({ setLastUpdate }: { setLastUpdate: React.Dispatch<React.SetStateAction<number>>; }) => {
   const [wilderId, setWilderId] = useState("");
   const [skillId, setSkillId] = useState("");
-  const [skills, setSkills] = useState<ISkillFromAPI[]>([]);
+  const [skills, setSkills] = useState<ISkillProps[]>([]);
   const [grade, setGrade] = useState("");
   const [wilders, setWilders] = useState<IWilderProps[]>([]);
   
@@ -20,7 +16,6 @@ const AddGrade = ({ setLastUpdate }: { setLastUpdate: React.Dispatch<React.SetSt
       const result = await axios.get<IWilderProps[]>(
         "http://localhost:5000/api/wilder"
       );
-      console.log("wilders", result);
       setWilders(result.data);
     };
     fetchWilders();
@@ -29,7 +24,6 @@ const AddGrade = ({ setLastUpdate }: { setLastUpdate: React.Dispatch<React.SetSt
   const getSkills = async () => {
     const skills = await axios.get("http://localhost:5000/api/skill");
     setSkills(skills.data)
-    console.log(skills);
 };
 
 useEffect(() => {
@@ -72,12 +66,15 @@ useEffect(() => {
           <label className={styles.label}>Choose a Skill to add: </label>
           <select onChange={(e) => {
               setSkillId(e.target.value);
-            }} >
+            }} 
+          >
               <option value="">--Please choose an option--</option>
-                {skills.map((skill)=> {
-                  return <option key={skill.id} value={skill.id}>{skill.name}</option>
+                {skills.map((skill) => {
+                  console.log(skills);
+                  
+                  return <option value={skill.title} key={skill.id}>{skill.title}</option>
                 })}
-              </select> 
+          </select> 
         </section> 
         <br></br>
         <section className={styles.inputBlock}>

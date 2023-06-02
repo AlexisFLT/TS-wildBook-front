@@ -2,17 +2,11 @@ import avatar from "../../assets/avatar.png";
 import { BsTrash3Fill } from "react-icons/bs";
 import PropTypes from "prop-types";
 import axios from "axios";
-import Skill, { ISkillProps } from "../Skills/Skill";
+import { IWilderProps } from "../../interface/interface";
 import styles from "./wilderCard.module.css";
+import Skill from "../Skills/Skill";
 
 export type Refresh = () => void;
-
-export interface IWilderProps {
-  id: number,
-  name: string,
-  city: string,
-  skills: ISkillProps[],
-};
 
 function WilderCard({ id, name, city, skills }: IWilderProps) {
 
@@ -37,7 +31,7 @@ function WilderCard({ id, name, city, skills }: IWilderProps) {
       </button>
       <img className={styles.avatarImg} src={avatar} alt="avatar" />
       <section className={styles.about}>
-        <h3 className={styles.h3} key={grades.wilderId}>
+        <h3 className={styles.h3}>
           {name}
           <span className={styles.city}> {city}</span>
         </h3>
@@ -53,7 +47,7 @@ function WilderCard({ id, name, city, skills }: IWilderProps) {
         <ul className={styles.skills}>
             {skills.map((skill) => (
               <button type="button" className={styles.button}>
-                <Skill key={skill.title} title={skill.title} votes={skill.votes} />
+                <Skill id={skill.id} title={skill.title} votes={skill.votes} />
               </button>
             ))}
         </ul>
@@ -68,8 +62,6 @@ WilderCard.propTypes = {
   name: PropTypes.string.isRequired,
   city: PropTypes.string.isRequired,
   skills: PropTypes.arrayOf(PropTypes.object).isRequired,
-  grades: PropTypes.arrayOf(PropTypes.object).isRequired,
-  refresh: PropTypes.func.isRequired,
 };
 
 export default WilderCard;

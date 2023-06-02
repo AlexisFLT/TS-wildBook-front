@@ -2,6 +2,7 @@ import avatar from "../../assets/avatar.png";
 import { BsTrash3Fill } from "react-icons/bs";
 import PropTypes from "prop-types";
 import axios from "axios";
+import Skill, { ISkillProps } from "../Skills/Skill";
 import styles from "./wilderCard.module.css";
 
 export type Refresh = () => void;
@@ -10,36 +11,21 @@ export interface IWilderProps {
   id: number,
   name: string,
   city: string,
-  grades: ISkillGradeProps
-  refresh: Refresh
+  skills: ISkillProps[],
 };
 
-export interface ISkillGradeProps {
-  map: any;
-  id: number,
-  wilderId: number,
-  skillId: number,
-  grade: number,
-  skill: ISkillProps,
-}
-
-export interface ISkillProps {
-  id: number,
-  name: string,
-}
-
-function WilderCard({ id, name, city, grades, refresh }: IWilderProps) {
+function WilderCard({ id, name, city, skills }: IWilderProps) {
 
   const handleDelete = (id: number) => {
     axios
       .delete(`http://localhost:5000/api/wilder/${id}`)
       .then(() => {
-        refresh();
       })
       .catch((error) => {
         console.error(error);
       });
   };
+
   return (
     <div className={styles.app} key={id}>
       <button
@@ -65,14 +51,11 @@ function WilderCard({ id, name, city, grades, refresh }: IWilderProps) {
       <section className={styles.skillsList}>
         <h4>Wild Skills</h4>
         <ul className={styles.skills}>
-          {grades.map((skill : ISkillGradeProps) => (
-            <button type="button" key={skill.id} className={styles.button}>
-              <li className={styles.skillGrade}>
-                <h5 className={styles.gradeTitle}>{skill.skill.name}</h5>
-                <span className={styles.grades}>{skill.grade}</span>
-              </li>
-            </button>
-          ))}
+            {skills.map((skill) => (
+              <button type="button" className={styles.button}>
+                <Skill key={skill.title} title={skill.title} votes={skill.votes} />
+              </button>
+            ))}
         </ul>
       </section>
     </div>
@@ -84,6 +67,7 @@ WilderCard.propTypes = {
   id: PropTypes.number,
   name: PropTypes.string.isRequired,
   city: PropTypes.string.isRequired,
+  skills: PropTypes.arrayOf(PropTypes.object).isRequired,
   grades: PropTypes.arrayOf(PropTypes.object).isRequired,
   refresh: PropTypes.func.isRequired,
 };

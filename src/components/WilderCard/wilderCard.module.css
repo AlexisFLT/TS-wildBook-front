@@ -46,13 +46,6 @@
     flex-wrap: wrap;
   }
 
-  .skillGrade{
-    display: flex;
-    gap: 0.8em;
-    align-items: center;
-  }
-  
-
   .button {
     height: 30px;
     cursor: pointer;
@@ -63,25 +56,4 @@
     display: inline-block;
     margin: 1%;
   }
-
-  .gradeTitle{
-    color: rgba(0, 0, 0, .3);
-    margin: 1%;
-  }
-
-  .grades{
-    height: 20px;
-    width: 20px; 
-    align-items: center;
-    display: flex;
-    justify-content: center;
-  
-    /* Colors */
-    background-color: rgba(0, 0, 0, .3);
-    color: #FFF;
-  
-    /* Rounded border */
-    border-radius: 9999px;
-  }
-
 

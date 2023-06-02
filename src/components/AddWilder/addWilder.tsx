@@ -1,43 +1,22 @@
 import axios from "axios";
-import PropTypes from "prop-types";
 import { AiOutlineUserAdd } from "react-icons/ai";
 import { SubmitHandler, useForm } from 'react-hook-form';
 import styles from "./addWilder.module.css";
 import { useEffect, useState } from "react";
 
-interface Refresh {
-  refresh: () => void;
-}
-
-interface IFormInput {
-  id: number,
-  name: string;
-  city: string,
-  grades: IFormSkillGrade,
-}
-
-interface IFormSkillGrade{
-  id: number,
-  wilderId: number,
-  skillId: number,
-  grade: number,
-  skill: IFormSkill,
-}
-
-interface IFormSkill{
-  id: number,
-  name: string,
-}
 
 
-const AddWilder = ({ refresh }: Refresh)  => {
-
+const AddWilder = ({ setLastUpdate }: { setLastUpdate: React.Dispatch<React.SetStateAction<number>>; })  => {
+  const [name, setName] = useState("");
+  const [city, setCity] = useState("");
   const [skills, setSkills] = useState<IFormSkill[]>([]);
 
   const { register, handleSubmit, reset } = useForm<IFormInput>();
 
   const onSubmit: SubmitHandler<IFormInput> = async (data) => {
     await axios
+      .post("http://localhost:5000/api/wilder", { name: name, city: city });
+      setLastUpdate(new Date().getTime());
       .post("http://localhost:5000/api/grade", {
           name: data.name,
           city: data.city,
@@ -66,52 +45,38 @@ useEffect(() => {
 }, []);
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className={styles.formIcon}>
-      <section className={styles.form}>
-        <section className={styles.inputBlock}>
-          <label className={styles.labelName}>Name</label>
-          <input
-            type="text"
-            {...register("name")}
-          />
+    <form onSubmit={handleSubmit}>
+      <h1  className={styles.title}>Create a Wilder</h1>
+      <section  className={styles.formIcon}>
+        <section className={styles.form}>
+          <section className={styles.inputBlock}>
+            <label className={styles.labelName}>Name</label>
+            <input
+              type="text"
+              value={name}
+              onChange={(e) => {
+                setName(e.target.value);
+              }}
+            />
+          </section>
+          <br />
+          <section className={styles.inputBlock}>
+            <label className={styles.labelCity}>City</label>
+            <input
+              type="text"
+              value={city}
+              onChange={(e) => {
+                setCity(e.target.value);
+              }}
+            />
+          </section>
         </section>
-        <br />
-        <section className={styles.inputBlock}>
-          <label className={styles.labelCity}>City</label>
-          <input
-            type="text"
-            {...register("city")}
-          />
-        </section>
+        <button type="submit" className={styles.addIcon}>
+          <AiOutlineUserAdd />
+        </button>
       </section>
-      <section className={styles.form}>
-        <section className={styles.inputBlock}>
-          <label className={styles.labelName}>Skill Selection</label>
-          <select {...register("grades.skill.name")} >
-          <option>- - -</option>
-            {skills.map((skill)=> {
-              return <option key={skill.id} value={skill.name}>{skill.name}</option>
-            })}
-          </select>  
-        </section>
-        <br />
-        <section className={styles.inputBlock}>
-          <label className={styles.labelCity}>Grade</label>
-          <input
-            type="text"
-            {...register("grades.grade")}
-          />
-        </section>
-      </section>
-      <button type="submit" className={styles.addIcon}>
-        <AiOutlineUserAdd />
-      </button>
     </form>
   );
-};
-
-AddWilder.propTypes = {
-  refresh: PropTypes.func.isRequired,
 };
 
 export default AddWilder;
